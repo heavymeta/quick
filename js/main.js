@@ -1,8 +1,16 @@
 var creating = false;
 var active;
 
+$(document).keyup(function(e) {
+  if (e.keyCode == 27) {
+    pushToGrid(active);
+    $(".sidebar").css("display","none");
+  }
+});
+
 $( document ).keypress(function( event ) {
 
+console.log(event.which);
   if ( event.which == 13 ) {
     if (!creating) {
       active = newIdea();
@@ -20,22 +28,35 @@ $("#footerTrigger").click(function() {
 });
 
 $(".container").click(function(e) {
-  console.log(e.target.id);
   if (creating) {
-    if (e.target.id != "working") {
-      active.remove();
-      creating = false;
-      active = "";
+
+    switch(e.target.id) {
+      case "":
+          active.remove();
+          creating = false;
+          active = "";
+        break;
+      case "expand":
+          expandMe();
+          break;
   }
-  }
+}
 });
 
+function expandMe() {
+  active.addClass("fullscreen");
+  active.removeClass("creation_active");
+  $(".container").css({"padding-left":"0px", "padding-right":"0px", "margin-top":"0px"});
+  $("#expand").css("display", "none");
+  $("#footerTrigger").css("display", "none");
+  $(".sidebar").css("display", "block");
+}
 
 function newIdea()
 {
   if (!creating){
     creating = true;
-    var $newdiv = $( "<div class='idea' contenteditable='true'>")
+    var $newdiv = $( "<div class='idea' contenteditable='true'><img src='img/expand.png' id='expand'></div>")
     $newdiv.addClass("creation_active");
     $newdiv.attr('id', 'working');
     var new_idea = $( ".container" ).prepend( $newdiv );
@@ -51,8 +72,8 @@ function pushToGrid(obj)
   obj.addClass("in_grid");
   active.attr('id', '');
   obj.removeClass("creation_active");
-
-
+  obj.removeClass("fullscreen");
+  $("#expand").css("display", "none");
   creating = false;
 }
 

@@ -5,7 +5,7 @@ body {
 
 .header {
 	width: 100%;
-	height 56px;
+	height 60px;
 	background: white;
 }
 
@@ -29,6 +29,30 @@ body {
   height: 100vh;
   padding-left: 2em;
   padding-right: 2em;
+
+}
+
+.sidebar	{
+	width: 24em;
+	float: right;
+	background: #fff;
+	height: 100vh;
+	padding-top: 90px;
+  display:none;
+}
+
+.sidebar input {
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	border:solid 1px #E8E7E3;
+	background-color: #FBFBFA;
+	padding-left: 10px;
+	margin-left: 32px;
+	height: 32px;
+	width: 275px;
+	font-size: 10pt;
+	font-weight: 400;
+	color: black;
 
 }
 
@@ -75,6 +99,31 @@ body {
 .in_grid:focus {
     outline: none;
 }
+
+.fullscreen:focus {
+    outline: none;
+}
+
+.creation_active #expand
+{
+  position: absolute;
+  display: block;
+  bottom: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
+.fullscreen {
+    float:none;
+    width: auto;
+    height: 100vh;
+    border-radius: 0px;
+    z-index:5000;
+}
+
+
 
 #footerTrigger {
   display: block;
