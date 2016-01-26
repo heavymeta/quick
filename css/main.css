@@ -36,6 +36,7 @@ body {
   width: 200px;
   height: 200px;
   background-color: white;
+  padding: 1em;
   white-space: pre;
   font-family: "Sentinel", serif;
   font-weight: 400;
