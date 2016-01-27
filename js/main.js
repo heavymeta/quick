@@ -2,8 +2,23 @@ var creating = false;
 var fullscreen = false;
 var active;
 
-$(".back").click(function(e) {
+$("#back").click(function(e) {
   exitFS();
+});
+
+$(document).on('click', '.in_grid' , function() {
+    console.log($(this));
+    active = $(this);
+    expandMe();
+});
+
+$(document).on('keyup', '.creation_active' , function() {
+  var len = $(this).html().length;
+  if(len > 100)
+  {
+    active = $(this);
+    expandMe();
+  }
 });
 
 $(document).keyup(function(e) {
@@ -11,13 +26,6 @@ $(document).keyup(function(e) {
     exitFS();
   }
 });
-
-function exitFS() {
-  pushToGrid(active);
-  $(".sidebar").css("display","none");
-  $(".container").removeClass("container_fs");
-  $("#footerTrigger").css("display", "block");
-}
 
 $( document ).keypress(function( event ) {
 
@@ -53,15 +61,31 @@ $(".container").click(function(e) {
 }
 });
 
+
+
 function expandMe() {
   active.addClass("fullscreen");
   active.removeClass("creation_active");
+  active.removeClass("in_grid");
+  active.attr('contenteditable', 'true');
   $(".container").addClass("container_fs");
   $("#expand").css("display", "none");
   $("#footerTrigger").css("display", "none");
   $(".sidebar").css("display", "block");
+  $(".in_grid").css("display", "none");
+  $("#back").css("display", "block");
   fullscreen = true;
 }
+
+function exitFS() {
+  pushToGrid(active);
+  $(".sidebar").css("display","none");
+  $(".container").removeClass("container_fs");
+  $("#footerTrigger").css("display", "block");
+  $(".in_grid").css("display", "block");
+  $("#back").css("display", "none");
+}
+
 
 function newIdea()
 {

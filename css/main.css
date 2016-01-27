@@ -15,6 +15,7 @@ body {
 
 .header #back {
 	float: left;
+  display: none;
 }
 
 .header #middle {
