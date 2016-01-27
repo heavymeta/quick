@@ -1,17 +1,27 @@
 var creating = false;
+var fullscreen = false;
 var active;
+
+$(".back").click(function(e) {
+  exitFS();
+});
 
 $(document).keyup(function(e) {
   if (e.keyCode == 27) {
-    pushToGrid(active);
-    $(".sidebar").css("display","none");
+    exitFS();
   }
 });
 
+function exitFS() {
+  pushToGrid(active);
+  $(".sidebar").css("display","none");
+  $(".container").removeClass("container_fs");
+  $("#footerTrigger").css("display", "block");
+}
+
 $( document ).keypress(function( event ) {
 
-console.log(event.which);
-  if ( event.which == 13 ) {
+  if ( event.which == 13 && !fullscreen) {
     if (!creating) {
       active = newIdea();
     } else {
@@ -46,10 +56,11 @@ $(".container").click(function(e) {
 function expandMe() {
   active.addClass("fullscreen");
   active.removeClass("creation_active");
-  $(".container").css({"padding-left":"0px", "padding-right":"0px", "margin-top":"0px"});
+  $(".container").addClass("container_fs");
   $("#expand").css("display", "none");
   $("#footerTrigger").css("display", "none");
   $(".sidebar").css("display", "block");
+  fullscreen = true;
 }
 
 function newIdea()
@@ -75,6 +86,7 @@ function pushToGrid(obj)
   obj.removeClass("fullscreen");
   $("#expand").css("display", "none");
   creating = false;
+  fullscreen = false
 }
 
 
