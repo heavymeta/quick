@@ -1,6 +1,36 @@
 var creating = false;
 var fullscreen = false;
 var active;
+var objects = new Array();
+
+$( document ).on( "mousemove", function( event ) {
+  if (objects.length > 1) {
+    var found = 0;
+    for (var i = 1; i < objects.length; i++) {
+      var p1 = objects[i].position();
+      var p2 = objects[i-1].position();
+
+      //console.log("X: " + event.pageX + " Card: " + (p1.left + 200) + " Card2: " + p2.left);
+
+        if (event.pageX > (p1.left + 250) && event.pageX < p2.left)
+        {
+          console.log("insertion");
+          found = i;
+        }
+      }
+      if (found > 0){
+        var fp1 = objects[found].position();
+        var fp2 = objects[found-1].position();
+        $("#insertion").css("display", "block");
+        $("#insertion").css("top", fp1.top + 35);
+        $("#insertion").css("left", fp2.left - 2);
+      } else {
+        $("#insertion").css("display", "none");
+        found = 0;
+      }
+  }
+});
+
 
 $("#back").click(function(e) {
   exitFS();
@@ -111,6 +141,7 @@ function pushToGrid(obj)
   $("#expand").css("display", "none");
   creating = false;
   fullscreen = false
+  objects.push(obj);
 }
 
 
