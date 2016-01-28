@@ -3,7 +3,12 @@ var fullscreen = false;
 var active;
 var objects = new Array();
 var found = 0;
+var last_found = 0;
 var in_grid = "";
+var opened=false;
+var closed=false;
+var cursor = false;
+
 
 // FIND MOUSE POSITION IN ARRAY
 $( document ).on( "mousemove", function( event ) {
@@ -16,30 +21,74 @@ $( document ).on( "mousemove", function( event ) {
       var p1 = objects[i].position();
       var p2 = objects[i-1].position();
 
-      console.log("X: " + event.pageX + " Card: " + (p1.left + 200) + " Card2: " + p2.left);
+      //console.log("X: " + event.pageX + " Card: " + (p1.left + 200) + " Card2: " + p2.left);
 
         if (event.pageX > (p1.left + 250) && event.pageX < p2.left)
         {
           if (event.pageY > (p1.top) && event.pageY < p1.top + 250) {
             found = i;
-            console.log("found is "+i);
+            last_found = i;
+            openInsert();
           }
         }
       }
       if (found > 0){
         var fp1 = objects[found].position();
         var fp2 = objects[found-1].position();
-        $("#insertion").css("display", "block");
-        $("#insertion").css("top", fp1.top + 35);
-        $("#insertion").css("left", fp2.left - 2);
+        if (!cursor){
+          $("#insertion").css("display", "block");
+          $("#insertion").css("top", fp1.top + 35);
+          $("#insertion").css("left", fp2.left - 10);
+          cursor = true;
+        }
 
       } else {
         $("#insertion").css("display", "none");
         found = 0;
+        if (opened){
+          closeInsert();
+          cursor = false;
+
+        }
+
       }
   }
 }
 });
+
+function openInsert() {
+  if(!opened){
+  objects[found].animate({
+    right: "+=5"
+  }, 300, function() {
+    // Animation complete.
+  });
+  objects[found - 1].animate({
+    left: "+=5"
+  }, 300, function() {
+    // Animation complete.
+  });
+  opened = true;
+}
+}
+
+function closeInsert() {
+console.log(last_found);
+if(!closed){
+  objects[last_found].animate({
+    right: "-=5"
+  }, 300, function() {
+    // Animation complete.
+  });
+  objects[last_found - 1].animate({
+    left: "-=5"
+  }, 300, function() {
+    // Animation complete.
+  });
+  closed=true;
+  opened = false;
+}
+}
 
 
 
@@ -69,7 +118,7 @@ function expandMe() {
   active.removeClass("creation_active");
   active.removeClass("in_grid");
   active.attr('contenteditable', 'true');
-  $(".container").addClass("container_fs");
+  $("#container").addClass("container_fs");
   $("#expand").css("display", "none");
   $("#footerTrigger").css("display", "none");
   $(".sidebar").css("display", "block");
@@ -95,7 +144,7 @@ $("#back").click(function(e) {
 function exitFS() {
   pushToGrid(active);
   $(".sidebar").css("display","none");
-  $(".container").removeClass("container_fs");
+  $("#container").removeClass("container_fs");
   $("#footerTrigger").css("display", "block");
   $(".in_grid").css("display", "block");
   $("#back").css("display", "none");
@@ -213,6 +262,8 @@ function addDrop(obj) {
       e.stopPropagation();
       e.preventDefault();
   };
+
+
   var handleDrop = function(e) {
       //kill any default behavior
       e.stopPropagation();
