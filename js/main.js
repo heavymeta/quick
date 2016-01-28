@@ -69,7 +69,7 @@ function expandMe() {
   active.removeClass("creation_active");
   active.removeClass("in_grid");
   active.attr('contenteditable', 'true');
-  $("#container").addClass("container_fs");
+  $(".container").addClass("container_fs");
   $("#expand").css("display", "none");
   $("#footerTrigger").css("display", "none");
   $(".sidebar").css("display", "block");
@@ -95,7 +95,7 @@ $("#back").click(function(e) {
 function exitFS() {
   pushToGrid(active);
   $(".sidebar").css("display","none");
-  $("#container").removeClass("container_fs");
+  $(".container").removeClass("container_fs");
   $("#footerTrigger").css("display", "block");
   $(".in_grid").css("display", "block");
   $("#back").css("display", "none");
