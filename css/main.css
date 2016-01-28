@@ -76,7 +76,7 @@ body {
   font-family: "Sentinel", serif;
   font-weight: 400;
   font-size: 16pt;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .idea img {
