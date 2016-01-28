@@ -7,6 +7,8 @@ var in_grid = "";
 
 // FIND MOUSE POSITION IN ARRAY
 $( document ).on( "mousemove", function( event ) {
+  if (!creating)
+  {
   found = 0;
   if (objects.length > 1) {
 
@@ -36,6 +38,7 @@ $( document ).on( "mousemove", function( event ) {
         found = 0;
       }
   }
+}
 });
 
 
@@ -179,6 +182,7 @@ function insertInGrid(obj){
   creating = false;
   fullscreen = false
   objects.splice(found,0,obj);
+  $('#insertion').css("display","none");
 }
 
 $("#container").click(function(e) {

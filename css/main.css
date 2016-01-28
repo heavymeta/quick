@@ -154,7 +154,7 @@ body {
 }
 
 #insertion {
-  display:block;
+  display:none;
   position: absolute;
   width:3px;
   height:200px;
