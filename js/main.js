@@ -8,20 +8,21 @@ var in_grid = "";
 var opened=false;
 var closed=false;
 var cursor = false;
+var length_text = 0;
 
 
 // FIND MOUSE POSITION IN ARRAY
 $( document ).on( "mousemove", function( event ) {
   if (!creating)
   {
-  found = 0;
-  if (objects.length > 1) {
+    found = 0;
+    if (objects.length > 1) {
 
-    for (var i = 1; i < objects.length; i++) {
-      var p1 = objects[i].position();
-      var p2 = objects[i-1].position();
+      for (var i = 1; i < objects.length; i++) {
+        var p1 = objects[i].position();
+        var p2 = objects[i-1].position();
 
-      //console.log("X: " + event.pageX + " Card: " + (p1.left + 200) + " Card2: " + p2.left);
+        //console.log("X: " + event.pageX + " Card: " + (p1.left + 200) + " Card2: " + p2.left);
 
         if (event.pageX > (p1.left + 250) && event.pageX < p2.left + 15)
         {
@@ -52,42 +53,42 @@ $( document ).on( "mousemove", function( event ) {
         }
 
       }
+    }
   }
-}
 });
 
 function openInsert() {
   if(!opened){
-  objects[found].animate({
-    right: "+=5"
-  }, 300, 'easeOutExpo', function() {
-    // Animation complete.
-  });
-  objects[found - 1].animate({
-    left: "+=5"
-  }, 300, 'easeOutExpo', function() {
-    // Animation complete.
-  });
-  opened = true;
-}
+    objects[found].animate({
+      right: "+=5"
+    }, 300, 'easeOutExpo', function() {
+      // Animation complete.
+    });
+    objects[found - 1].animate({
+      left: "+=5"
+    }, 300, 'easeOutExpo', function() {
+      // Animation complete.
+    });
+    opened = true;
+  }
 }
 
 function closeInsert() {
-console.log(last_found);
-if(!closed){
-  objects[last_found].animate({
-    right: "-=5"
-  }, 300, 'easeOutExpo', function() {
-    // Animation complete.
-  });
-  objects[last_found - 1].animate({
-    left: "-=5"
-  }, 300, 'easeOutExpo', function() {
-    // Animation complete.
-  });
-  closed=true;
-  opened = false;
-}
+  console.log(last_found);
+  if(!closed){
+    objects[last_found].animate({
+      right: "-=5"
+    }, 300, 'easeOutExpo', function() {
+      // Animation complete.
+    });
+    objects[last_found - 1].animate({
+      left: "-=5"
+    }, 300, 'easeOutExpo', function() {
+      // Animation complete.
+    });
+    closed=true;
+    opened = false;
+  }
 }
 
 
@@ -96,20 +97,86 @@ if(!closed){
 
 // EXPAND TO FS FROM CLICK ON GRID
 $(document).on('click', '.in_grid' , function() {
-    console.log($(this));
-    active = $(this);
-    expandMe();
+  console.log($(this));
+  active = $(this);
+  expandMe();
 });
 
 // EXPAND TO FS FROM OVERRUN IN CARD
-$(document).on('keyup', '.creation_active' , function() {
-  var len = $(this).html().length;
-  if(len > 100)
+$(document).on('keyup', function(event) {
+
+  switch(event.target.id) {
+    case "":
+      containerKey(event);
+    break;
+    case "textarea":
+      textboxKey(event);
+    break;
+  }
+
+});
+
+function containerKey(e){
+  if ( e.which == 13 && !fullscreen && !creating) {
+    in_grid = true;
+    length = 0;
+    active = newIdea();
+  }
+
+  if (e.keyCode == 27 && fullscreen) {
+    exitFS();
+  }
+}
+
+function textboxKey(e){
+  if ( e.which == 13 && !fullscreen && creating) {
+    if(in_grid){
+      creating = false;
+      pushToGrid(active);
+      if(length_text < 50)
+      {
+        console.log("in here");
+        active.children('.text_area').removeClass('center_idea');
+        active.children('.text_area').addClass('center_idea_ingrid');
+      } else {
+        active.children('.text_area').removeClass('left_idea');
+        active.children('.text_area').addClass('left_idea_ingrid');
+      }
+    } else {
+      creating = false;
+      insertInGrid(active);
+      if(length_text < 50)
+      {
+        console.log("in here");
+        active.children('.text_area').removeClass('center_idea');
+        active.children('.text_area').addClass('center_idea_ingrid');
+      } else {
+        active.children('.text_area').removeClass('left_idea');
+        active.children('.text_area').addClass('left_idea_ingrid');
+      }
+    }
+  }
+  length_text = active.children('.text_area').html().length;
+  console.log(length_text);
+
+  if(length_text > 40)
+  {
+    console.log("in here");
+    active.children('.text_area').removeClass('center_idea');
+    active.children('.text_area').addClass('left_idea');
+  } else {
+    active.children('.text_area').removeClass('left_idea');
+    active.children('.text_area').addClass('center_idea');
+  }
+
+  if(length_text > 120)
   {
     active = $(this);
     expandMe();
   }
-});
+}
+
+
 
 // EXPAND TO FS
 ///////////////
@@ -127,13 +194,6 @@ function expandMe() {
   fullscreen = true;
 }
 
-// EXIT FS FROM ESC
-$(document).keyup(function(e) {
-  if (e.keyCode == 27) {
-    exitFS();
-  }
-});
-
 // EXIT FS FROM BACK
 $("#back").click(function(e) {
   exitFS();
@@ -149,27 +209,6 @@ function exitFS() {
   $(".in_grid").css("display", "block");
   $("#back").css("display", "none");
 }
-
-
-// CREATE NEW IDEA
-$( document ).keypress(function( event ) {
-
-  if ( event.which == 13 && !fullscreen) {
-    if (!creating) {
-      in_grid = true;
-      active = newIdea();
-    } else {
-      if(in_grid){
-        console.log("push to grid");
-        pushToGrid(active);
-    } else {
-        console.log("insert to grid");
-        insertInGrid(active);
-    }
-    }
-
-  }
-});
 
 //CREAT NEW IDEA FROM FOOTER
 $("#footerTrigger").click(function() {
@@ -190,8 +229,9 @@ function newIdea()
   console.log(in_grid);
   if (!creating){
     creating = true;
-    var $newdiv = $( "<div class='idea' contenteditable='true'><img src='img/expand.png' id='expand'></div>")
+    var $newdiv = $( "<div class='idea'><div class='text_area' id='textarea' contenteditable='true'></div><img src='img/expand.png' id='expand'></div>")
     $newdiv.addClass("creation_active");
+    $newdiv.addClass("center_idea");
     $newdiv.attr('id', 'working');
     if(in_grid){
       console.log("default into position");
@@ -200,8 +240,8 @@ function newIdea()
       console.log("insert into position");
       $( objects[found] ).first().after($newdiv);
     }
-    $newdiv.focus();
     addDrop($newdiv);
+    $newdiv.children('.text_area').focus();
     return $newdiv;
   }
 }
@@ -209,7 +249,7 @@ function newIdea()
 function pushToGrid(obj)
 {
   console.log("active " + obj);
-  active.attr('contenteditable','false');
+  active.children('.text_area').attr('contenteditable','false');
   obj.addClass("in_grid");
   active.attr('id', '');
   obj.removeClass("creation_active");
@@ -222,7 +262,7 @@ function pushToGrid(obj)
 
 function insertInGrid(obj){
 
-  active.attr('contenteditable','false');
+  active.children('.text_area').attr('contenteditable','false');
   obj.addClass("in_grid");
   active.attr('id', '');
   obj.removeClass("creation_active");
@@ -238,15 +278,15 @@ $("#container").click(function(e) {
   if (creating) {
     switch(e.target.id) {
       case "container":
-          active.remove();
-          creating = false;
-          active = "";
-        break;
+      active.remove();
+      creating = false;
+      active = "";
+      break;
       case "expand":
-          expandMe();
-          break;
+      expandMe();
+      break;
+    }
   }
-}
 });
 
 
@@ -258,63 +298,63 @@ $("#container").click(function(e) {
 // DRAG AND DROP IMAGES
 function addDrop(obj) {
   var handleDrag = function(e) {
-      //kill any default behavior
-      e.stopPropagation();
-      e.preventDefault();
+    //kill any default behavior
+    e.stopPropagation();
+    e.preventDefault();
   };
 
 
   var handleDrop = function(e) {
-      //kill any default behavior
-      e.stopPropagation();
-      e.preventDefault();
-      //console.log(e);
-      //get x and y coordinates of the dropped item
-      x = e.clientX;
-      y = e.clientY;
-      //drops are treated as multiple files. Only dealing with single files right now, so assume its the first object you're interested in
-      var file = e.dataTransfer.files[0];
-      //don't try to mess with non-image files
-      if (file.type.match('image.*')) {
-          //then we have an image,
+    //kill any default behavior
+    e.stopPropagation();
+    e.preventDefault();
+    //console.log(e);
+    //get x and y coordinates of the dropped item
+    x = e.clientX;
+    y = e.clientY;
+    //drops are treated as multiple files. Only dealing with single files right now, so assume its the first object you're interested in
+    var file = e.dataTransfer.files[0];
+    //don't try to mess with non-image files
+    if (file.type.match('image.*')) {
+      //then we have an image,
 
-          //we have a file handle, need to read it with file reader!
-          var reader = new FileReader();
+      //we have a file handle, need to read it with file reader!
+      var reader = new FileReader();
 
-          // Closure to capture the file information.
-          reader.onload = (function(theFile) {
-              //get the data uri
-              var dataURI = theFile.target.result;
-              //make a new image element with the dataURI as the source
-              var img = document.createElement("img");
-              img.src = dataURI;
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        //get the data uri
+        var dataURI = theFile.target.result;
+        //make a new image element with the dataURI as the source
+        var img = document.createElement("img");
+        img.src = dataURI;
 
-              //Insert the image at the carat
+        //Insert the image at the carat
 
-              // Try the standards-based way first. This works in FF
-              if (document.caretPositionFromPoint) {
-                  var pos = document.caretPositionFromPoint(x, y);
-                  range = document.createRange();
-                  range.setStart(pos.offsetNode, pos.offset);
-                  range.collapse();
-                  range.insertNode(img);
-              }
-              // Next, the WebKit way. This works in Chrome.
-              else if (document.caretRangeFromPoint) {
-                  range = document.caretRangeFromPoint(x, y);
-                  range.insertNode(img);
-              }
-              else
-              {
-                  //not supporting IE right now.
-                  console.log('could not find carat');
-              }
+        // Try the standards-based way first. This works in FF
+        if (document.caretPositionFromPoint) {
+          var pos = document.caretPositionFromPoint(x, y);
+          range = document.createRange();
+          range.setStart(pos.offsetNode, pos.offset);
+          range.collapse();
+          range.insertNode(img);
+        }
+        // Next, the WebKit way. This works in Chrome.
+        else if (document.caretRangeFromPoint) {
+          range = document.caretRangeFromPoint(x, y);
+          range.insertNode(img);
+        }
+        else
+        {
+          //not supporting IE right now.
+          console.log('could not find carat');
+        }
 
 
-          });
-          //this reads in the file, and the onload event triggers, which adds the image to the div at the carat
-          reader.readAsDataURL(file);
-      }
+      });
+      //this reads in the file, and the onload event triggers, which adds the image to the div at the carat
+      reader.readAsDataURL(file);
+    }
   };
 
   var dropZone = document.getElementById("working");

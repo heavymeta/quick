@@ -68,15 +68,49 @@ body {
 }
 
 .idea {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   background-color: white;
-  padding: 1em;
   white-space: pre;
   font-family: "Sentinel", serif;
-  font-weight: 400;
-  font-size: 16pt;
   overflow: hidden;
+  display:block;
+}
+
+.text_area {
+  width: 80%;
+  height:300px;
+  background-color: #fff;
+  padding:.5em;
+  margin-top:.5em;
+  margin-right:auto;
+  margin-left: auto;
+  outline: none;
+
+}
+
+.center_idea {
+  text-align: center;
+  font-size: 48pt;
+  font-weight: bold;
+}
+
+.center_idea_ingrid {
+  text-align: center;
+  font-size: 36pt;
+  font-weight: bold;
+}
+
+.left_idea {
+  text-align: left;
+  font-size: 16pt;
+  font-weight: 400;
+}
+
+.left_idea_ingrid {
+  text-align: center;
+  font-size: 16pt;
+  font-weight: 400;
 }
 
 .idea img {
@@ -87,7 +121,7 @@ body {
   float: left;
   position:relative;
   display: block;
-  margin:.5em;
+  margin:.25em;
   border-radius: 5px;
   z-index: 200;
 }
@@ -96,8 +130,8 @@ body {
   position: absolute;
   display: block;
   bottom: 20%;
-  width: 320px;
-  height: 320px;
+  width: 410px;
+  height: 410px;
   margin-left: auto;
   margin-right: auto;
   left: 0;
