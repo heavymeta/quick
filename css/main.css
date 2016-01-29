@@ -156,8 +156,9 @@ body {
 #insertion {
   display:none;
   position: absolute;
-  width:20px;
+  width:30px;
   height:200px;
   background-color: gray;
   opacity: 0;
+  cursor: copy;
 }

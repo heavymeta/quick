@@ -23,7 +23,7 @@ $( document ).on( "mousemove", function( event ) {
 
       //console.log("X: " + event.pageX + " Card: " + (p1.left + 200) + " Card2: " + p2.left);
 
-        if (event.pageX > (p1.left + 250) && event.pageX < p2.left)
+        if (event.pageX > (p1.left + 250) && event.pageX < p2.left + 15)
         {
           if (event.pageY > (p1.top) && event.pageY < p1.top + 250) {
             found = i;
@@ -38,7 +38,7 @@ $( document ).on( "mousemove", function( event ) {
         if (!cursor){
           $("#insertion").css("display", "block");
           $("#insertion").css("top", fp1.top + 35);
-          $("#insertion").css("left", fp2.left - 10);
+          $("#insertion").css("left", fp2.left - 15);
           cursor = true;
         }
 
@@ -60,12 +60,12 @@ function openInsert() {
   if(!opened){
   objects[found].animate({
     right: "+=5"
-  }, 300, function() {
+  }, 300, 'easeOutExpo', function() {
     // Animation complete.
   });
   objects[found - 1].animate({
     left: "+=5"
-  }, 300, function() {
+  }, 300, 'easeOutExpo', function() {
     // Animation complete.
   });
   opened = true;
@@ -77,12 +77,12 @@ console.log(last_found);
 if(!closed){
   objects[last_found].animate({
     right: "-=5"
-  }, 300, function() {
+  }, 300, 'easeOutExpo', function() {
     // Animation complete.
   });
   objects[last_found - 1].animate({
     left: "-=5"
-  }, 300, function() {
+  }, 300, 'easeOutExpo', function() {
     // Animation complete.
   });
   closed=true;
