@@ -92,9 +92,6 @@ function closeInsert() {
 }
 
 
-
-
-
 // EXPAND TO FS FROM CLICK ON GRID
 $(document).on('click', '.in_grid' , function() {
   console.log($(this));
@@ -132,7 +129,7 @@ function textboxKey(e){
   if ( e.which == 13 && !fullscreen && creating) {
     if(in_grid){
       creating = false;
-      pushToGrid(active);
+
       if(length_text < 50)
       {
         console.log("in here");
@@ -142,9 +139,10 @@ function textboxKey(e){
         active.children('.text_area').removeClass('left_idea');
         active.children('.text_area').addClass('left_idea_ingrid');
       }
+      pushToGrid(active);
     } else {
       creating = false;
-      insertInGrid(active);
+
       if(length_text < 50)
       {
         console.log("in here");
@@ -154,12 +152,13 @@ function textboxKey(e){
         active.children('.text_area').removeClass('left_idea');
         active.children('.text_area').addClass('left_idea_ingrid');
       }
+      insertInGrid(active);
     }
   }
   length_text = active.children('.text_area').html().length;
   console.log(length_text);
 
-  if(length_text > 40)
+  if(length_text > 25)
   {
     console.log("in here");
     active.children('.text_area').removeClass('center_idea');
@@ -169,9 +168,8 @@ function textboxKey(e){
     active.children('.text_area').addClass('center_idea');
   }
 
-  if(length_text > 120)
+  if(length_text > 80)
   {
-    active = $(this);
     expandMe();
   }
 }
@@ -184,7 +182,7 @@ function expandMe() {
   active.addClass("fullscreen");
   active.removeClass("creation_active");
   active.removeClass("in_grid");
-  active.attr('contenteditable', 'true');
+  active.children('.text_area').attr('contenteditable', 'true');
   $("#container").addClass("container_fs");
   $("#expand").css("display", "none");
   $("#footerTrigger").css("display", "none");
