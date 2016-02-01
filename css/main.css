@@ -187,6 +187,21 @@ body {
   z-index: 500;
 }
 
+#pressEnter {
+    display: block;
+    position: absolute;
+    font-size: 10pt;
+    bottom: 4%;
+    margin-left: auto;
+    margin-right: auto;
+    left:0;
+    right:0;
+    text-align: center;
+    font-family: 'Avenir Next', sans-serif;
+    color: gray;
+    z-index: -500;
+}
+
 #insertion {
   display:none;
   position: absolute;

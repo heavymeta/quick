@@ -91,7 +91,6 @@ function closeInsert() {
   }
 }
 
-
 // EXPAND TO FS FROM CLICK ON GRID
 $(document).on('click', '.in_grid' , function() {
   console.log($(this));
@@ -126,19 +125,9 @@ function containerKey(e){
 }
 
 function textboxKey(e){
+  console.log("creating " + creating);
   if ( e.which == 13 && !fullscreen && creating) {
-    length_text = active.children('.text_area').html().length;
 
-    if(length_text > 25)
-    {
-      console.log("in here");
-      active.children('.text_area').removeClass('center_idea');
-      active.children('.text_area').addClass('left_idea');
-    } else {
-      active.children('.text_area').removeClass('left_idea');
-      active.children('.text_area').addClass('center_idea');
-    }
-    
     if(in_grid){
       creating = false;
 
@@ -168,13 +157,26 @@ function textboxKey(e){
     }
   }
 
+  length_text = active.children('.text_area').html().length;
+
+  console.log("length " + length_text);
+  if(length_text > 25)
+  {
+    console.log("in here");
+    active.children('.text_area').removeClass('center_idea');
+    active.children('.text_area').addClass('left_idea');
+  } else {
+    active.children('.text_area').removeClass('left_idea');
+    active.children('.text_area').addClass('center_idea');
+  }
 
   if(length_text > 80)
   {
     expandMe();
   }
-}
 
+
+}
 
 
 // EXPAND TO FS
@@ -225,7 +227,6 @@ $("#insertion").click(function(e) {
 
 function newIdea()
 {
-  console.log(in_grid);
   if (!creating){
     creating = true;
     var $newdiv = $( "<div class='idea'><div class='text_area' id='textarea' contenteditable='true'></div><img src='img/expand.png' id='expand'></div>")
@@ -288,12 +289,6 @@ $("#container").click(function(e) {
   }
 });
 
-
-
-
-
-
-
 // DRAG AND DROP IMAGES
 function addDrop(obj) {
   var handleDrag = function(e) {
@@ -301,7 +296,6 @@ function addDrop(obj) {
     e.stopPropagation();
     e.preventDefault();
   };
-
 
   var handleDrop = function(e) {
     //kill any default behavior
