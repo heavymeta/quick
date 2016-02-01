@@ -127,6 +127,18 @@ function containerKey(e){
 
 function textboxKey(e){
   if ( e.which == 13 && !fullscreen && creating) {
+    length_text = active.children('.text_area').html().length;
+
+    if(length_text > 25)
+    {
+      console.log("in here");
+      active.children('.text_area').removeClass('center_idea');
+      active.children('.text_area').addClass('left_idea');
+    } else {
+      active.children('.text_area').removeClass('left_idea');
+      active.children('.text_area').addClass('center_idea');
+    }
+    
     if(in_grid){
       creating = false;
 
@@ -155,18 +167,7 @@ function textboxKey(e){
       insertInGrid(active);
     }
   }
-  length_text = active.children('.text_area').html().length;
-  console.log(length_text);
 
-  if(length_text > 25)
-  {
-    console.log("in here");
-    active.children('.text_area').removeClass('center_idea');
-    active.children('.text_area').addClass('left_idea');
-  } else {
-    active.children('.text_area').removeClass('left_idea');
-    active.children('.text_area').addClass('center_idea');
-  }
 
   if(length_text > 80)
   {
