@@ -9,7 +9,22 @@ var opened=false;
 var closed=false;
 var cursor = false;
 var length_text = 0;
+var minimized = true;
 
+$( document ).ready(function() {
+  newSmallIdea();
+});
+
+function newSmallIdea() {
+  if (!creating) {
+    in_grid = true;
+    active = newIdea();
+    active.removeClass("creation_active");
+    active.removeClass("center_idea");
+    active.addClass("minimized");
+    minimized = true;
+  }
+}
 
 // FIND MOUSE POSITION IN ARRAY
 $( document ).on( "mousemove", function( event ) {
@@ -93,9 +108,16 @@ function closeInsert() {
 
 // EXPAND TO FS FROM CLICK ON GRID
 $(document).on('click', '.in_grid' , function() {
-  console.log($(this));
   active = $(this);
   expandMe();
+});
+
+// EXPAND TO FS FROM CLICK ON GRID
+$(document).on('click', '.minimized' , function() {
+  active.removeClass("minimized");
+  active.addClass("creation_active");
+  active.addClass("center_idea");
+  active.children('.text_area').attr('contenteditable', 'true');
 });
 
 // EXPAND TO FS FROM OVERRUN IN CARD
@@ -125,7 +147,6 @@ function containerKey(e){
 }
 
 function textboxKey(e){
-  console.log("creating " + creating);
   if ( e.which == 13 && !fullscreen && creating) {
 
     if(in_grid){
@@ -141,6 +162,7 @@ function textboxKey(e){
         active.children('.text_area').addClass('left_idea_ingrid');
       }
       pushToGrid(active);
+      newSmallIdea();
     } else {
       creating = false;
 
@@ -154,6 +176,7 @@ function textboxKey(e){
         active.children('.text_area').addClass('left_idea_ingrid');
       }
       insertInGrid(active);
+      newSmallIdea();
     }
   }
 
@@ -174,8 +197,6 @@ function textboxKey(e){
   {
     expandMe();
   }
-
-
 }
 
 
@@ -215,8 +236,8 @@ function exitFS() {
 $("#footerTrigger").click(function() {
   if (!creating) {
     in_grid = true;
+    minimized = false;
     active = newIdea();
-
   }
 });
 
@@ -229,15 +250,13 @@ function newIdea()
 {
   if (!creating){
     creating = true;
-    var $newdiv = $( "<div class='idea'><div class='text_area' id='textarea' contenteditable='true'></div><img src='img/expand.png' id='expand'></div>")
+    var $newdiv = $( "<div class='idea'><div class='text_area' id='textarea' contenteditable='false'></div><img src='img/expand.png' id='expand'></div>")
     $newdiv.addClass("creation_active");
     $newdiv.addClass("center_idea");
     $newdiv.attr('id', 'working');
     if(in_grid){
-      console.log("default into position");
       $( "#container" ).prepend( $newdiv );
     } else {
-      console.log("insert into position");
       $( objects[found] ).first().after($newdiv);
     }
     addDrop($newdiv);
@@ -278,9 +297,11 @@ $("#container").click(function(e) {
   if (creating) {
     switch(e.target.id) {
       case "container":
-      active.remove();
-      creating = false;
-      active = "";
+        if (!minimized) {
+          active.remove();
+          creating = false;
+          active = "";
+        }
       break;
       case "expand":
       expandMe();
@@ -342,8 +363,6 @@ function addDrop(obj) {
           //not supporting IE right now.
           console.log('could not find carat');
         }
-
-
       });
       //this reads in the file, and the onload event triggers, which adds the image to the div at the carat
       reader.readAsDataURL(file);

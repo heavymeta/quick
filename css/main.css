@@ -68,8 +68,6 @@ body {
 }
 
 .idea {
-  width: 250px;
-  height: 250px;
   background-color: white;
   white-space: pre;
   font-family: "Sentinel", serif;
@@ -86,28 +84,53 @@ body {
   margin-right:auto;
   margin-left: auto;
   outline: none;
+}
+
+.minimized {
+  width: 380px;
+  height: 55px;
+  border-radius: 7px;
+
+  display: block;
+  position: absolute;
+  bottom: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  left:0;
+  right:0;
+  z-index: 500;
+
+  box-shadow: 0px 10px 47px -6px rgba(0,0,0,0.26);
 
 }
 
 .center_idea {
+  width: 250px;
+  height: 250px;
   text-align: center;
   font-size: 48pt;
   font-weight: bold;
 }
 
 .center_idea_ingrid {
+  width: 250px;
+  height: 250px;
   text-align: center;
   font-size: 36pt;
   font-weight: bold;
 }
 
 .left_idea {
+  width: 250px;
+  height: 250px;
   text-align: left;
   font-size: 16pt;
   font-weight: 400;
 }
 
 .left_idea_ingrid {
+  width: 250px;
+  height: 250px;
   text-align: left;
   font-size: 16pt;
   font-weight: 400;
@@ -174,17 +197,8 @@ body {
     font-size: 24pt;
 }
 
-
-
 #footerTrigger {
-  display: block;
-  position: absolute;
-  bottom: 7%;
-  margin-left: auto;
-  margin-right: auto;
-  left:0;
-  right:0;
-  z-index: 500;
+
 }
 
 #pressEnter {
